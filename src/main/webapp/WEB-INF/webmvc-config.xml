@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+           
+	<!--
+	Framework : Spring MVC
+	Purpose: This file defines elements required for spring MVC.
+
+				We define following elements inside this file		
+
+				* URL Mapping
+				* View Resolver
+				
+
+	Location: 	It should be placed in the WEB-INF/config directory
+
+	-->
+
+	<!-- ===========================  Spring MVC configuration for Annotations ========================== -->
+	
+	<!-- Configure annotations handler which enables spring to recognize the annotations -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+<!-- 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
+<!-- 		<property name="webBindingInitializer"> -->
+<!-- 			<bean class="com.accenture.training.web.binding.BindingInitializer" /> -->
+<!--   		</property> -->
+<!-- 	</bean> -->
+	
+	<!-- Scan the controller classes which are defined using annotations  -->
+	<context:component-scan base-package="com.maxinfoti.quickstart"/>
+	
+	
+   <!-- ===========================  View Resolver	========================== --> 
+   
+   <!-- Configure view resolver that will be used to get jsp/html pages in application -->		
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<!-- Location for JSP pages -->
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<!-- All View files will have .jsp extension -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+
+	<!--
+
+	Purpose:  	Web deployment descriptor contains deployment related information 
+				of the web application.  All elements specified in this file will 
+				be loaded at the time when application is loaded into container. 
+
+				We define following elements inside this file		
+
+				* Servlets definition and mapping (for ex. Spring Dispatcher servlet)
+				* Display Name (which will be shown in the server console after deployment)
+				* Spring Configuration files
+				* SiteMesh Configuration files
+				* Listeners (for ex. Spring Context Configuration listener)
+				* Filters (for ex. SiteMesh, Security, etc.)
+				* Welcome Page
+				* Error Page
+
+	Location: 	It should be placed in the WEB-INF directory
+
+	-->
+
+	<!-- Site name, replace with the relevant name -->
+	<display-name>quickStart</display-name>
+
+	<!-- Define all files that should get loaded at application startup (i.e. configuration files) -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			<!-- Configuration file location -->
+			/WEB-INF/web-application-config.xml
+		</param-value>
+	</context-param>
+	
+	<!-- Configure ContextLoaderListener to load configuration files defined in above section 
+	at application start-up. -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>	
+	
+	<!-- Configure the main servlet used by spring web application. -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/action-servlet.xml</param-value>
+		</init-param>		
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<!-- *** This name should match with "servlet-name" entry in servlet tag above *** -->
+		<servlet-name>action</servlet-name>
+		<!-- *** Specify which type of URL's should be mapped to servlet. *** -->
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+      <filter-name>OpenEntityManagerInViewFilter</filter-name>
+	  <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	  <filter-name>OpenEntityManagerInViewFilter</filter-name>
+	  <url-pattern>*.html</url-pattern>
+	</filter-mapping>
+		<!-- ================= SiteMesh configuration =============== -->
+
+	<!-- Define Welcome page List -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>

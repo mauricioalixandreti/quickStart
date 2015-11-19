@@ -1,0 +1,56 @@
+<beans:beans 	xmlns="http://www.springframework.org/schema/security"
+				xmlns:beans="http://www.springframework.org/schema/beans"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:tx="http://www.springframework.org/schema/tx"
+				xsi:schemaLocation="http://www.springframework.org/schema/beans
+									http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+									http://www.springframework.org/schema/security
+									http://www.springframework.org/schema/security/spring-security-2.0.1.xsd
+									http://www.springframework.org/schema/tx
+									http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<!--
+	Framework: Configure Spring Security.
+
+	Purpose: This file defines the following
+
+			  * Access Decision Manager
+			  * HTTP Intercept URLs
+			  * Loading Users and Roles from DataBase
+			  * Configuration For Handling Annotation based Security
+			  * User, Roles Configuration (NOT SUITED FOR REAL TIME APPS) - optional in case of loading roles, users from DataBase
+			  * Cache Beans Configuration
+			  
+	Location: It should be located in the class path ,as it was configured in web.xml
+
+	Related Config Files : web.xml 
+	-->	
+
+
+	<!-- ===========================  HTTP Intercept URLs ========================== -->
+
+	<http>
+		<!-- *** Add intercept-url entries specific to your application *** -->
+	
+		<intercept-url pattern="/welcome.html*"	access="ROLE_ADMIN,ROLE_USER" />
+		<intercept-url pattern="/listPersons.html*" access="ROLE_ADMIN,ROLE_USER" />
+		<intercept-url pattern="/addPerson.html*" access="ROLE_ADMIN,ROLE_USER" />
+		<intercept-url pattern="/updatePerson.html*" access="ROLE_ADMIN,ROLE_USER" />
+		<intercept-url pattern="/deletePerson.html*" access="ROLE_ADMIN,ROLE_USER" />
+		
+		<!-- loign.jsp, http-basic will not be invoked when it is configured -->
+		<form-login login-page="/login.jsp" default-target-url="/welcome.html" always-use-default-target="false" 
+		authentication-failure-url="/login.jsp?error=true"/>		
+		<!--  where to go after logout -->		
+		<logout logout-success-url="/login.jsp" />
+	</http>
+	
+	<!-- ============  User, Roles Configuration NOT SUITED FOR REAL TIME APPS ========== -->
+	<authentication-provider>
+		<user-service>
+			<user name="admin" password="admin" authorities="ROLE_ADMIN,ROLE_USER" />
+			<user name="user" password="1234" authorities="ROLE_USER" />
+		</user-service>
+	</authentication-provider>
+
+</beans:beans>
